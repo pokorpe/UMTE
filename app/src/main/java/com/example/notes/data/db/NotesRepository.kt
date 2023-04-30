@@ -8,7 +8,7 @@ import java.util.concurrent.Flow
 
 class NotesRepository (private val noteDao: NoteDao){
 
-    val allNotes = noteDao.selectAll()
+    val allNotes : LiveData<List<NoteEntity>> = noteDao.getAllNotes()
     fun insertOrUpdate(note:NoteEntity) {
         noteDao.insertOrUpdate(note)
     }

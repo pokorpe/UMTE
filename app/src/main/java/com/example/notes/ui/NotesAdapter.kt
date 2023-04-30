@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.notes.R
 import com.example.notes.data.db.entities.NoteEntity
 
-class Notes(private val context: Context, val listener: NotesItemClickListener) : RecyclerView.Adapter<Notes.NoteViewHolder>() {
+class NotesAdapter(private val context: Context, val listener: NotesItemClickListener) : RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
     private val NotesList = ArrayList<NoteEntity>()
     private val fullList = ArrayList<NoteEntity>()
 
@@ -45,6 +45,9 @@ class Notes(private val context: Context, val listener: NotesItemClickListener) 
     fun updateList(newList : List<NoteEntity>){
         fullList.clear()
         fullList.addAll(newList)
+
+        NotesList.clear()
+        NotesList.addAll(fullList)
         notifyDataSetChanged()
     }
 

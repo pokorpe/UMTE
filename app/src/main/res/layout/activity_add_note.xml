@@ -67,10 +67,9 @@
         android:gravity="top"
         android:hint="Poznámka"
         android:lineSpacingMultiplier="1.8"
-        android:background="null"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/et_title"
         app:layout_constraintStart_toStartOf="@+id/et_title"
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
