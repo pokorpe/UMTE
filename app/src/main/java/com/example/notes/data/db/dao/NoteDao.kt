@@ -14,10 +14,6 @@ interface NoteDao {
     @Delete
     fun delete(note: NoteEntity)
 
-    /*
-        @Query("Select * From NoteEntity Order By priority Desc")
-        fun selectAll(): Flow<List<NoteEntity>>
-        */
     @Query("Select * From NoteEntity Order by date Desc")
     fun getAllNotes() : LiveData<List<NoteEntity>>
 
