@@ -2,11 +2,19 @@ package com.example.notes
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.icu.text.SimpleDateFormat
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.notes.data.db.entities.NoteEntity
 import com.example.notes.databinding.ActivityAddNoteBinding
 import com.nvt.color.ColorPickerDialog
@@ -21,11 +29,14 @@ class AddNote : AppCompatActivity() {
     private lateinit var old_note: NoteEntity
     var isUpdated = false
 
+    //var pickedPhoto: Uri? = null
+    //var pickedBitMap: Bitmap? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         try {
             //TODO
             old_note = intent.getSerializableExtra("current_note") as NoteEntity
@@ -33,11 +44,14 @@ class AddNote : AppCompatActivity() {
             binding.etNote.setText(old_note.note)
             //!!!
             binding.etTitle.setTextColor(old_note.titleColor)
+
+            decode(old_note.pictureUri)
+
             isUpdated = true
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         // var tc = binding.etTitle.currentTextColor
 
         binding.imgColor.setOnClickListener {
@@ -55,6 +69,19 @@ class AddNote : AppCompatActivity() {
                     }
                 })
             colorPicker.show()
+        }
+
+        binding.imgPicture.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+            } else {
+                val galleryInText = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galleryInText, 2)
+            }
         }
 
         binding.imgCheck.setOnClickListener {
@@ -83,6 +110,41 @@ class AddNote : AppCompatActivity() {
         }
         binding.imgBackArrow.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            val galleryInText = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galleryInText, 2)
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
+            var pickedPhoto = data.data
+            var pickedBitMap: Bitmap? = null
+            println("photo: "+pickedPhoto)
+
+            if (Build.VERSION.SDK_INT >= 28) {
+                val source = ImageDecoder.createSource(this.contentResolver, pickedPhoto!!)
+                pickedBitMap = ImageDecoder.decodeBitmap(source)
+                println("bitmap: "+pickedBitMap)
+                binding.pictureField.setImageBitmap(pickedBitMap)
+                println(pickedBitMap)
+            } else {
+                pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, pickedPhoto)
+                binding.pictureField.setImageBitmap(pickedBitMap)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+    fun decode(uri:String){
+        if (Build.VERSION.SDK_INT >= 28) {
+            val source = ImageDecoder.createSource(this.contentResolver, Uri.parse(uri)!!)
+            val pickedBitMap = ImageDecoder.decodeBitmap(source)
+            binding.pictureField.setImageBitmap(pickedBitMap)
         }
     }
 }
