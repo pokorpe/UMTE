@@ -26,8 +26,8 @@
                 android:id="@+id/img_backArrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
                 android:layout_marginTop="12dp"
+                android:padding="8dp"
                 app:srcCompat="@drawable/baseline_arrow_back_24" />
 
             <ImageView
@@ -52,6 +52,17 @@
                 android:layout_marginBottom="12dp"
                 android:padding="8dp"
                 app:srcCompat="@drawable/baseline_check_24" />
+
+            <ImageView
+                android:id="@+id/img_picture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="12dp"
+                android:layout_toStartOf="@+id/img_color"
+                android:padding="8dp"
+                app:srcCompat="@drawable/baseline_image_24" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
@@ -87,4 +98,13 @@
         app:layout_constraintEnd_toEndOf="@+id/et_title"
         app:layout_constraintStart_toStartOf="@+id/et_title"
         app:layout_constraintTop_toBottomOf="@+id/et_title" />
+
+    <ImageView
+        android:id="@+id/pictureField"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
 </androidx.constraintlayout.widget.ConstraintLayout>

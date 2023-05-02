@@ -77,13 +77,12 @@ class AddNote : AppCompatActivity() {
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             } else {
-                Toast.makeText(this@AddNote, "Prosím vložte text", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddNote, "Nejprve vložte text", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
         }
         binding.imgBackArrow.setOnClickListener {
-            //TODO
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }
