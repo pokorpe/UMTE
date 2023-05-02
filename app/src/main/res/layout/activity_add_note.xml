@@ -88,30 +88,27 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="26dp"
+        android:background="@null"
         android:ems="10"
-        android:inputType="textMultiLine"
         android:gravity="top"
         android:hint="Poznámka"
+        android:inputType="textMultiLine"
         android:lineSpacingMultiplier="1.8"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/pictureField"
         app:layout_constraintEnd_toEndOf="@+id/et_title"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/et_title"
-        app:layout_constraintTop_toBottomOf="@+id/et_title" />
-
-    <TextView
-        android:id="@+id/et_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/et_title"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/pictureField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="360dp"
+        android:gravity="bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:layout_constraintTop_toBottomOf="@+id/et_note"
+        app:srcCompat="@android:color/transparent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
