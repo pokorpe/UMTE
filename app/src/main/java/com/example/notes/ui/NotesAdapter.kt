@@ -23,11 +23,20 @@ class NotesAdapter(private val context: Context, val listener: NotesItemClickLis
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
         val currentNote = NotesList[position]
         holder.title.text = currentNote.title
+        //!!!TODO
+        holder.title.setTextColor(currentNote.titleColor)
+
         holder.title.isSelected = true
 
         holder.note_tv.text = currentNote.note
+
         holder.date.text = currentNote.date
         holder.date.isSelected = true
+
+
+
+
+       // holder.title.setTextColor(holder.itemView.resources.getColor(ra))
 
         holder.notes_layout.setOnClickListener{
             //listener.onItemClicked(NotesList[holder.adapterPosition])

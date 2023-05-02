@@ -57,4 +57,7 @@ dependencies {
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
+
+    //ColorPicker
+    implementation 'com.github.novatien:SmartColorPicker:1.0.2'
 }

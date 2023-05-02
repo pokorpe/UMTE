@@ -1,5 +1,6 @@
 package com.example.notes.data.db.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -9,5 +10,7 @@ data class NoteEntity(
     val id: Long?,
     val title: String = "",
     val note: String = "",
-    val date : String = ""
+    val date: String = "",
+    val titleColor: Int
 ) : java.io.Serializable
+
