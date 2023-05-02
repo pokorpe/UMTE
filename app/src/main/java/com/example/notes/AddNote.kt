@@ -24,11 +24,8 @@ class AddNote : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var newtc: Int
-        //
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         try {
             //TODO
             old_note = intent.getSerializableExtra("current_note") as NoteEntity
@@ -41,6 +38,8 @@ class AddNote : AppCompatActivity() {
             e.printStackTrace()
         }
 
+        // var tc = binding.etTitle.currentTextColor
+
         binding.imgColor.setOnClickListener {
             val colorPicker = ColorPickerDialog(
                 this,
@@ -51,23 +50,7 @@ class AddNote : AppCompatActivity() {
                     }
 
                     override fun onOk(dialog: ColorPickerDialog?, colorPicker: Int) {
-                        //Toast.makeText(this@AddNote, colorPicker.toString(), Toast.LENGTH_SHORT).show()
-                        val title = binding.etTitle.text.toString()
-                        val noteDesc = binding.etNote.text.toString()
-                        val tc = binding.etTitle.currentTextColor
-                        val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
-                        if (isUpdated) {
-                            note = NoteEntity(
-                                old_note.id, title, noteDesc, old_note.date, colorPicker
-                            )
-                        } else {
-                            note = NoteEntity(
-                                null, title, noteDesc, formatter.format(Date()), colorPicker
-                            )
-                        }
-                        val intent = Intent()
-                        intent.putExtra("note", note)
-                        setResult(Activity.RESULT_OK, intent)
+                        // tc = colorPicker
                         binding.etTitle.setTextColor(colorPicker)
                     }
                 })

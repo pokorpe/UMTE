@@ -11,6 +11,6 @@ data class NoteEntity(
     val title: String = "",
     val note: String = "",
     val date: String = "",
-    val titleColor: Int
+    val titleColor: Int = -1
 ) : java.io.Serializable
 
