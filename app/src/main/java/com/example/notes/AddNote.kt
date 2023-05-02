@@ -33,7 +33,7 @@ class AddNote : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         supportActionBar?.hide()
         binding = ActivityAddNoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -79,7 +79,7 @@ class AddNote : AppCompatActivity() {
                 ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
             } else {
                 val selectPicture = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                val chooser = Intent.createChooser(selectPicture,"")
+                val chooser = Intent.createChooser(selectPicture, "")
                 startActivityForResult(chooser, 2)
             }
         }
@@ -90,7 +90,7 @@ class AddNote : AppCompatActivity() {
             val tc = binding.etTitle.currentTextColor
             val uri = pictureUri
             if (title.isNotEmpty() || noteDesc.isNotEmpty()) {
-                val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
+                val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.GERMANY)
                 if (isUpdated) {
                     note = NoteEntity(
                         oldNote.id, title, noteDesc, oldNote.date, tc, uri
@@ -116,9 +116,9 @@ class AddNote : AppCompatActivity() {
         }
         binding.pictureField.setOnClickListener {
             val openPicture = Intent(Intent.ACTION_VIEW, Uri.parse(pictureUri))
-           // val chooser = Intent.createChooser(openPicture, pictureUri)
+            // val chooser = Intent.createChooser(openPicture, pictureUri)
             startActivity(openPicture)
-           // startActivity(chooser )
+            // startActivity(chooser )
             //Toast.makeText(this@AddNote, pictureUri, Toast.LENGTH_LONG).show()
             //binding.etNote.setText(pictureUri)
         }
@@ -126,13 +126,15 @@ class AddNote : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             val galleryInText = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             startActivityForResult(galleryInText, 2)
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
             decode(data.data)
@@ -140,16 +142,16 @@ class AddNote : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun decode(uri: Uri?): Bitmap {
+    private fun decode(uri: Uri?): Bitmap {
+        val pickedBitMap : Bitmap
         if (Build.VERSION.SDK_INT >= 28) {
             val source = ImageDecoder.createSource(this.contentResolver, uri!!)
-            val pickedBitMap = ImageDecoder.decodeBitmap(source)
+            pickedBitMap = ImageDecoder.decodeBitmap(source)
             binding.pictureField.setImageBitmap(pickedBitMap)
             pictureUri = uri.toString()
-            return pickedBitMap;
         } else {
-            val pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
-            return pickedBitMap
+            pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
         }
+        return pickedBitMap
     }
 }
