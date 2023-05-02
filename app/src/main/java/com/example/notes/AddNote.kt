@@ -44,10 +44,12 @@ class AddNote : AppCompatActivity() {
             binding.etNote.setText(old_note.note)
             //!!!
             binding.etTitle.setTextColor(old_note.titleColor)
-
-            decode(old_note.pictureUri)
-
             isUpdated = true
+
+            binding.etTemp.setText(old_note.pictureUri)
+            binding.pictureField.setImageBitmap(decode(Uri.parse(old_note.pictureUri)))
+            // decode(Uri.parse(old_note.pictureUri))
+
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -88,16 +90,22 @@ class AddNote : AppCompatActivity() {
             val title = binding.etTitle.text.toString()
             val noteDesc = binding.etNote.text.toString()
             val tc = binding.etTitle.currentTextColor
+            val uri = binding.etTemp.text.toString()
+            //val uri = note.pictureUri
             if (title.isNotEmpty() || noteDesc.isNotEmpty()) {
                 val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm")
                 if (isUpdated) {
+                    //val uri = old_note.pictureUri
                     note = NoteEntity(
-                        old_note.id, title, noteDesc, old_note.date, tc
+                        old_note.id, title, noteDesc, old_note.date, tc, uri
                     )
+                    println("1")
                 } else {
+                    //val uri = note.pictureUri
                     note = NoteEntity(
-                        null, title, noteDesc, formatter.format(Date()), tc
+                        null, title, noteDesc, formatter.format(Date()), tc, uri
                     )
+                    println("2")
                 }
                 val intent = Intent()
                 intent.putExtra("note", note)
@@ -123,28 +131,38 @@ class AddNote : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
+            decode(data.data)
+            /*
             var pickedPhoto = data.data
             var pickedBitMap: Bitmap? = null
-            println("photo: "+pickedPhoto)
+            println("photo: " + pickedPhoto)
 
-            if (Build.VERSION.SDK_INT >= 28) {
-                val source = ImageDecoder.createSource(this.contentResolver, pickedPhoto!!)
-                pickedBitMap = ImageDecoder.decodeBitmap(source)
-                println("bitmap: "+pickedBitMap)
-                binding.pictureField.setImageBitmap(pickedBitMap)
-                println(pickedBitMap)
-            } else {
-                pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, pickedPhoto)
-                binding.pictureField.setImageBitmap(pickedBitMap)
-            }
+                        if (Build.VERSION.SDK_INT >= 28) {
+                            val source = ImageDecoder.createSource(this.contentResolver, pickedPhoto!!)
+                            pickedBitMap = ImageDecoder.decodeBitmap(source)
+                            println("bitmap: "+pickedBitMap)
+                            binding.pictureField.setImageBitmap(pickedBitMap)
+                            println(pickedBitMap)
+                        } else {
+                            pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, pickedPhoto)
+                            binding.pictureField.setImageBitmap(pickedBitMap)
+                        }
+             */
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
-    fun decode(uri:String){
+
+    fun decode(uri: Uri?): Bitmap {
         if (Build.VERSION.SDK_INT >= 28) {
-            val source = ImageDecoder.createSource(this.contentResolver, Uri.parse(uri)!!)
+            val source = ImageDecoder.createSource(this.contentResolver, uri!!)
             val pickedBitMap = ImageDecoder.decodeBitmap(source)
             binding.pictureField.setImageBitmap(pickedBitMap)
+            binding.etTemp.setText(uri.toString())
+            return pickedBitMap;
+        } else {
+            val pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+            //binding.pictureField.setImageBitmap(pickedBitMap)
+            return pickedBitMap
         }
     }
 }
