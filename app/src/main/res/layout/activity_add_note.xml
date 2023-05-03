@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="12dp"
                 android:layout_toStartOf="@+id/img_check"
                 android:padding="8dp"
@@ -58,11 +58,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="12dp"
-                android:layout_toStartOf="@+id/img_color"
+                android:layout_toStartOf="@+id/img_bold"
                 android:padding="8dp"
                 app:srcCompat="@drawable/baseline_image_24" />
+
+            <ImageView
+                android:id="@+id/img_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="12dp"
+                android:padding="8dp"
+                android:layout_toStartOf="@+id/img_color"
+                app:srcCompat="@drawable/baseline_format_bold_24" />
 
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
