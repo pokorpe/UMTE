@@ -13,6 +13,6 @@ data class NoteEntity(
     val date: String = "",
     val titleColor: Int,
     val pictureUri: String,
-    val isBold:Boolean = false
+    val isBold: Boolean
 ) : java.io.Serializable
 

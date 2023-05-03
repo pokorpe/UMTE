@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
+import android.graphics.Typeface
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -29,6 +30,7 @@ class AddNote : AppCompatActivity() {
     private lateinit var oldNote: NoteEntity
     private var isUpdated = false
     private var pictureUri = ""
+    private var locIsBold = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +46,17 @@ class AddNote : AppCompatActivity() {
             binding.etTitle.setText(oldNote.title)
             binding.etNote.setText(oldNote.note)
 
-            binding.etTitle.setTextColor(oldNote.titleColor)
+
             isUpdated = true
+
+            locIsBold=oldNote.isBold
+            println("start: ")
+            println(locIsBold)
+            binding.etTitle.setTextColor(oldNote.titleColor)
+            if (locIsBold){
+                binding.etNote.setTypeface(null, Typeface.BOLD)
+            }
+
 
             pictureUri = oldNote.pictureUri
             binding.pictureField.setImageBitmap(decode(Uri.parse(oldNote.pictureUri)))
@@ -88,19 +99,21 @@ class AddNote : AppCompatActivity() {
             val title = binding.etTitle.text.toString()
             val noteDesc = binding.etNote.text.toString()
             val tc = binding.etTitle.currentTextColor
-            val uri = pictureUri
+            //val uri = pictureUri
             if (title.isNotEmpty() || noteDesc.isNotEmpty()) {
                 val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.GERMANY)
                 if (isUpdated) {
                     note = NoteEntity(
-                        oldNote.id, title, noteDesc, oldNote.date, tc, uri
+                        oldNote.id, title, noteDesc, oldNote.date, tc, pictureUri,locIsBold
                     )
                     println("1")
+                    println(locIsBold)
                 } else {
                     note = NoteEntity(
-                        null, title, noteDesc, formatter.format(Date()), tc, uri
+                        null, title, noteDesc, formatter.format(Date()), tc, pictureUri,locIsBold
                     )
                     println("2")
+                    println(locIsBold)
                 }
                 val intent = Intent()
                 intent.putExtra("note", note)
@@ -122,7 +135,15 @@ class AddNote : AppCompatActivity() {
             //Toast.makeText(this@AddNote, pictureUri, Toast.LENGTH_LONG).show()
             //binding.etNote.setText(pictureUri)
         }
-
+        binding.imgBold.setOnClickListener {
+            if (!locIsBold) {
+                binding.etNote.setTypeface(null, Typeface.BOLD)
+                    locIsBold = true
+            }else{
+                binding.etNote.setTypeface(null, Typeface.NORMAL)
+                locIsBold = false
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
