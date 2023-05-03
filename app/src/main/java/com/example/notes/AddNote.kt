@@ -45,19 +45,12 @@ class AddNote : AppCompatActivity() {
             oldNote = intent.getSerializableExtra("current_note") as NoteEntity
             binding.etTitle.setText(oldNote.title)
             binding.etNote.setText(oldNote.note)
-
-
             isUpdated = true
-
-            locIsBold=oldNote.isBold
-            println("start: ")
-            println(locIsBold)
             binding.etTitle.setTextColor(oldNote.titleColor)
-            if (locIsBold){
+            locIsBold = oldNote.isBold
+            if (locIsBold) {
                 binding.etNote.setTypeface(null, Typeface.BOLD)
             }
-
-
             pictureUri = oldNote.pictureUri
             binding.pictureField.setImageBitmap(decode(Uri.parse(oldNote.pictureUri)))
 
@@ -104,16 +97,12 @@ class AddNote : AppCompatActivity() {
                 val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.GERMANY)
                 if (isUpdated) {
                     note = NoteEntity(
-                        oldNote.id, title, noteDesc, oldNote.date, tc, pictureUri,locIsBold
+                        oldNote.id, title, noteDesc, oldNote.date, tc, pictureUri, locIsBold
                     )
-                    println("1")
-                    println(locIsBold)
                 } else {
                     note = NoteEntity(
-                        null, title, noteDesc, formatter.format(Date()), tc, pictureUri,locIsBold
+                        null, title, noteDesc, formatter.format(Date()), tc, pictureUri, locIsBold
                     )
-                    println("2")
-                    println(locIsBold)
                 }
                 val intent = Intent()
                 intent.putExtra("note", note)
@@ -138,8 +127,8 @@ class AddNote : AppCompatActivity() {
         binding.imgBold.setOnClickListener {
             if (!locIsBold) {
                 binding.etNote.setTypeface(null, Typeface.BOLD)
-                    locIsBold = true
-            }else{
+                locIsBold = true
+            } else {
                 binding.etNote.setTypeface(null, Typeface.NORMAL)
                 locIsBold = false
             }
@@ -164,7 +153,7 @@ class AddNote : AppCompatActivity() {
     }
 
     private fun decode(uri: Uri?): Bitmap {
-        val pickedBitMap : Bitmap
+        val pickedBitMap: Bitmap
         if (Build.VERSION.SDK_INT >= 28) {
             val source = ImageDecoder.createSource(this.contentResolver, uri!!)
             pickedBitMap = ImageDecoder.decodeBitmap(source)
