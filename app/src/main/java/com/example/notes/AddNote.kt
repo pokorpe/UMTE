@@ -94,13 +94,13 @@ class AddNote : AppCompatActivity() {
             val tc = binding.etTitle.currentTextColor
             //val uri = pictureUri
             if (title.isNotEmpty() || noteDesc.isNotEmpty()) {
-                val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.GERMANY)
-                if (isUpdated) {
-                    note = NoteEntity(
+                val formatter = SimpleDateFormat("EEE, d MMM yyyy HH:mm", Locale.getDefault())
+                note = if (isUpdated) {
+                    NoteEntity(
                         oldNote.id, title, noteDesc, oldNote.date, tc, pictureUri, locIsBold
                     )
                 } else {
-                    note = NoteEntity(
+                    NoteEntity(
                         null, title, noteDesc, formatter.format(Date()), tc, pictureUri, locIsBold
                     )
                 }
@@ -125,12 +125,12 @@ class AddNote : AppCompatActivity() {
             //binding.etNote.setText(pictureUri)
         }
         binding.imgBold.setOnClickListener {
-            if (!locIsBold) {
+            locIsBold = if (!locIsBold) {
                 binding.etNote.setTypeface(null, Typeface.BOLD)
-                locIsBold = true
+                true
             } else {
                 binding.etNote.setTypeface(null, Typeface.NORMAL)
-                locIsBold = false
+                false
             }
         }
     }
@@ -160,6 +160,7 @@ class AddNote : AppCompatActivity() {
             binding.pictureField.setImageBitmap(pickedBitMap)
             pictureUri = uri.toString()
         } else {
+            @Suppress("DEPRECATION")
             pickedBitMap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
         }
         return pickedBitMap

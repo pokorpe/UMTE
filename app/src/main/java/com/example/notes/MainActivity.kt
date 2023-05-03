@@ -21,9 +21,9 @@ import com.example.notes.ui.NotesAdapter
 class MainActivity : AppCompatActivity(),  NotesAdapter.NotesItemClickListener, PopupMenu.OnMenuItemClickListener{
     private lateinit var binding: ActivityMainBinding
     private lateinit var database: NoteDatabase
-    lateinit var viewModel: NoteViewModel
-    lateinit var adapter: NotesAdapter
-    lateinit var selectNote: NoteEntity
+    private lateinit var viewModel: NoteViewModel
+    private lateinit var adapter: NotesAdapter
+    private lateinit var selectNote: NoteEntity
 
     private val updateNote = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(),  NotesAdapter.NotesItemClickListener, 
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
         supportActionBar?.hide()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity(),  NotesAdapter.NotesItemClickListener, 
             ViewModelProvider.AndroidViewModelFactory.getInstance(application)
         ).get(NoteViewModel::class.java)
 
-        viewModel.allnotes.observe(this) { list ->
+        viewModel.allNotes.observe(this) { list ->
             list?.let {
                 adapter.updateList(list)
             }

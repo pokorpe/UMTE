@@ -3,7 +3,6 @@ package com.example.notes.data.db.dao
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.notes.data.db.entities.NoteEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {

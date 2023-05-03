@@ -4,11 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.util.joinIntoString
 import com.example.notes.data.db.dao.NoteDao
 import com.example.notes.data.db.entities.NoteEntity
 
-@Database(version = 1, entities = arrayOf(NoteEntity::class), exportSchema = false)
+@Database(version = 1, entities = [NoteEntity::class], exportSchema = false)
 abstract class NoteDatabase : RoomDatabase(){
     abstract fun getNoteDao():NoteDao
 
