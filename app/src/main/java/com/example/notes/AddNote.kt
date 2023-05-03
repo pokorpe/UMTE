@@ -14,6 +14,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.Window
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -74,6 +75,12 @@ class AddNote : AppCompatActivity() {
             colorPicker.show()
         }
 
+
+        val selectPicture = this.registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) {
+            decode(it)
+        }
         binding.imgPicture.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     this,
@@ -82,9 +89,7 @@ class AddNote : AppCompatActivity() {
             ) {
                 ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
             } else {
-                val selectPicture = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                val chooser = Intent.createChooser(selectPicture, "")
-                startActivityForResult(chooser, 2)
+                selectPicture.launch("image/")
             }
         }
 
